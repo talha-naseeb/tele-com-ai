@@ -24,7 +24,7 @@ Optional: drop obsolete collections from older versions of this repo (`calls`, `
 src/
   server.js              # HTTP server entry (local dev / production Node)
   seed.js                # Loads data/seed-data.json into MongoDB
-  app.js                 # Builds Fastify (also used by api/index.js on Vercel)
+  app-factory.js         # Builds Fastify (`createApp`; not named app.js — avoids Vercel Fastify auto-detection)
   config/index.js        # Environment config
   lib/db.js              # Mongoose connection
   models/index.js        # Schemas
@@ -33,7 +33,7 @@ src/
     telecom.service.js   # Customer snapshot & complaints
   utils/
     priority.js          # Complaint priority helper
-api/index.js             # Vercel serverless entry → src/app.js
+api/index.js             # Vercel serverless entry → src/app-factory.js
 ```
 
 ## Endpoints
@@ -56,4 +56,6 @@ curl -s -X POST http://localhost:8080/tools/register-complaint-callback \
 
 ## Deploy on Vercel
 
-The repo includes [`api/index.js`](api/index.js) and [`vercel.json`](vercel.json). Add **`MONGODB_URI`** (and optionally **`DEFAULT_CALLBACK_SLA_HOURS`**) in the Vercel project environment variables. Seed once from your machine using the same URI: `npm run seed`.
+The repo includes [`api/index.js`](api/index.js) and [`vercel.json`](vercel.json). In **Vercel → Project → Settings → Environment Variables**, add **`MONGODB_URI`** (and optionally **`DEFAULT_CALLBACK_SLA_HOURS`**). Allow MongoDB Atlas access from the internet (`0.0.0.0/0` under Network Access for demos). Seed once from your laptop with the same URI: `npm run seed`.
+
+If the function shows **crashed** or **503**: confirm `MONGODB_URI` is set for **Production** (and Preview if you test previews). Do not name the Fastify factory `src/app.js` — this repo uses [`src/app-factory.js`](src/app-factory.js) so Vercel does not treat it as a second framework entry.

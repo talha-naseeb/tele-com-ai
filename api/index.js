@@ -1,10 +1,18 @@
 /**
- * Vercel Serverless entry: all HTTP traffic is rewritten here with ?__v_path=$1
- * so Fastify still sees paths like /health and /customers/... at the root.
+ * Vercel Serverless entry: rewrites send traffic here with ?__v_path=$1
+ * so Fastify sees paths like /health at the root.
  */
-import { createApp } from '../src/app.js';
+import { createApp } from '../src/app-factory.js';
 
-let appPromise;
+let cachedApp;
+
+async function getApp() {
+  if (cachedApp) {
+    return cachedApp;
+  }
+  cachedApp = await createApp();
+  return cachedApp;
+}
 
 function fixPathFromRewrite(req) {
   try {
@@ -23,13 +31,69 @@ function fixPathFromRewrite(req) {
   }
 }
 
+/** Wait until the Node response is finished (required on Vercel or the function may exit too early). */
+function awaitResponseEnd(res) {
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    const cleanup = () => {
+      res.removeListener('finish', onDone);
+      res.removeListener('close', onDone);
+      res.removeListener('error', onErr);
+    };
+    function onDone() {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      resolve();
+    }
+    function onErr(err) {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      reject(err);
+    }
+    res.once('finish', onDone);
+    res.once('close', onDone);
+    res.once('error', onErr);
+  });
+}
+
 export default async function handler(req, res) {
   fixPathFromRewrite(req);
 
-  if (!appPromise) {
-    appPromise = createApp();
+  try {
+    const app = await getApp();
+    await app.ready();
+
+    const responseDone = awaitResponseEnd(res);
+
+    try {
+      app.server.emit('request', req, res);
+    } catch (emitErr) {
+      console.error('emit request failed:', emitErr);
+      if (!res.headersSent) {
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ message: 'Internal server error' }));
+      }
+      await responseDone.catch(() => {});
+      return;
+    }
+
+    await responseDone;
+  } catch (err) {
+    console.error('Vercel handler error:', err);
+    if (!res.headersSent) {
+      res.statusCode = 503;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(
+        JSON.stringify({
+          message: 'Service unavailable',
+          detail:
+            err?.message ||
+            'Set MONGODB_URI in Vercel → Settings → Environment Variables. Atlas must allow outbound IPs (e.g. 0.0.0.0/0 for demos).'
+        })
+      );
+    }
   }
-  const app = await appPromise;
-  await app.ready();
-  app.server.emit('request', req, res);
 }

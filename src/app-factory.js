@@ -3,6 +3,8 @@ import cors from '@fastify/cors';
 import { registerRoutes } from './routes/index.js';
 import { connectDb } from './lib/db.js';
 
+/** Named `app-factory.js` (not `app.js`) so Vercel does not treat this file as the framework entrypoint. */
+
 export async function createApp() {
   await connectDb();
 
