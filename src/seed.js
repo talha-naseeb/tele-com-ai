@@ -82,8 +82,8 @@ async function seed() {
         type: p.type,
         categories: p.categories || [],
         data_gb: p.data_gb ?? 0,
-        price_monthly_aed: p.price_monthly_aed,
-        currency: 'AED',
+        price_monthly: p.price_monthly ?? p.price_monthly_aed,
+        currency: p.currency || 'SYP',
         description: p.description,
         sort_order: p.sort_order ?? 0
       }))

@@ -71,8 +71,8 @@ const packageCatalogSchema = new Schema(
     },
     categories: [{ type: String }],
     data_gb: { type: Number, default: 0 },
-    price_monthly_aed: { type: Number, required: true },
-    currency: { type: String, default: 'AED' },
+    price_monthly: { type: Number, required: true },
+    currency: { type: String, default: 'SYP' },
     description: { type: String, required: true },
     sort_order: { type: Number, default: 0 }
   },

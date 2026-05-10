@@ -5,9 +5,9 @@ import { canonicalInternationalPhone } from '../utils/phone.js';
 import { config } from '../config/index.js';
 
 const PACKAGES = [
-  { plan: 'Starter 10GB Add-on', monthlyPrice: 20, dataGb: 10 },
-  { plan: 'Value 50GB Add-on', monthlyPrice: 45, dataGb: 50 },
-  { plan: 'Unlimited Social Pack', monthlyPrice: 30, dataGb: 999 }
+  { plan: 'Starter 10GB Add-on', monthlyPrice: 28000, dataGb: 10 },
+  { plan: 'Value 50GB Add-on', monthlyPrice: 62000, dataGb: 50 },
+  { plan: 'Unlimited Social Pack', monthlyPrice: 41000, dataGb: 999 }
 ];
 
 export async function getCustomerByPhone(phoneNumber) {
@@ -47,7 +47,7 @@ export async function getCustomerSnapshot(phoneNumber, usagePreference = 'genera
       amountDue: Number(bill.amount_due),
       dueDate: bill.due_date instanceof Date ? bill.due_date.toISOString().slice(0, 10) : bill.due_date,
       status: bill.status,
-      currency: 'AED'
+      currency: 'SYP'
     };
   }
 
@@ -65,7 +65,7 @@ export async function getCustomerSnapshot(phoneNumber, usagePreference = 'genera
     balance: {
       planName: customer.plan_name,
       balanceDue: Number(customer.balance_due),
-      currency: 'AED'
+      currency: 'SYP'
     },
     bill: billPayload,
     sim: {

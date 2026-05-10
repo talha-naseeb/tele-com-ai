@@ -17,7 +17,7 @@ async function getApp() {
 /**
  * Rewrites pass the original path in `?__v_path=`. Query strings use
  * application/x-www-form-urlencoded rules: literal `+` becomes a space when
- * parsed. E.164 paths like `/customers/+971…` then arrive as `customers/ 971…`
+ * parsed. E.164 paths like `/customers/+963…` then arrive as `customers/ 963…`
  * and no longer match Mongo / validation. Restore `+` before the leading digit.
  */
 function normalizeRewrittenPath(vPath) {

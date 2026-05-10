@@ -36,8 +36,8 @@ export async function getPackages(filters = {}) {
     type: p.type,
     categories: p.categories || [],
     data_gb: p.data_gb,
-    price_monthly_aed: Number(p.price_monthly_aed),
-    currency: p.currency || 'AED',
+    price_monthly: Number(p.price_monthly),
+    currency: p.currency || 'SYP',
     description: p.description,
     sort_order: p.sort_order
   }));

@@ -69,7 +69,7 @@ function validateCoverageFields({ city, area, serviceType }) {
       status: 400,
       body: {
         message:
-          'city and area must be real values from the customer (e.g. Dubai, Downtown), not literal "{{city}}" / "{{area}}" placeholders.',
+          'city and area must be real values from the customer (e.g. Damascus, Mazzeh), not literal "{{city}}" / "{{area}}" placeholders.',
         found: false
       }
     };

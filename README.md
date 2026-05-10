@@ -14,9 +14,11 @@ npm run seed
 npm run dev
 ```
 
+Re-run **`npm run seed`** after pulling updates so MongoDB matches the current `data/seed-data.json` (e.g. Syria +963 numbers, **`price_monthly`** / **SYP** on packages).
+
 Server default: `http://localhost:8080` (override with **`PORT`**).
 
-[`data/seed-data.json`](data/seed-data.json) holds demo **customers**, **billing**, **complaints**, **packages**, **offers**, and **coverage** areas. After `npm run seed`, try the examples below.
+[`data/seed-data.json`](data/seed-data.json) holds **Syria-themed** demo data: **+963** mobile numbers, cities (Damascus, Aleppo, Homs, Latakia, …), **SYP** package prices, **customers**, **billing**, **complaints**, **packages**, **offers**, and **coverage** areas. After `npm run seed`, try the examples below.
 
 ### MongoDB Compass
 
@@ -86,27 +88,31 @@ Full mapping (POST bodies and legacy GET) is in [docs/retell-apis.md](docs/retel
 ### Examples
 
 ```bash
-curl -s "http://localhost:8080/customers/+971501112233"
+curl -s "http://localhost:8080/customers/+963941112233"
 curl -s -X POST http://localhost:8080/customers/snapshot \
   -H "Content-Type: application/json" \
-  -d '{"phoneNumber":"+971501112233","usagePreference":"social"}'
+  -d '{"phoneNumber":"+963941112233","usagePreference":"social"}'
 curl -s -X POST http://localhost:8080/packages \
   -H "Content-Type: application/json" \
   -d '{"type":"prepaid","category":"social"}'
 curl -s -X POST http://localhost:8080/offers
 curl -s -X POST http://localhost:8080/coverage \
   -H "Content-Type: application/json" \
-  -d '{"city":"Dubai","area":"Dubai Marina","serviceType":"fiber"}'
+  -d '{"city":"Damascus","area":"Mazzeh","serviceType":"fiber"}'
 curl -s -X POST http://localhost:8080/tools/register-complaint-callback \
   -H "Content-Type: application/json" \
-  -d '{"phoneNumber":"+971501234567","issueType":"billing","description":"Wrong charge on last bill"}'
+  -d '{"phoneNumber":"+963951234567","issueType":"billing","description":"Wrong charge on last bill"}'
 curl -s -X POST http://localhost:8080/tools/new-connection-callback \
   -H "Content-Type: application/json" \
-  -d '{"fullName":"Sara Ali","phoneNumber":"+971509998877","city":"Dubai","area":"Marina","planPreference":"postpaid","notes":"Home fiber interest"}'
+  -d '{"fullName":"Sara Ali","phoneNumber":"+963958887766","city":"Aleppo","area":"Aziziyah","planPreference":"postpaid","notes":"Home fiber interest"}'
 ```
 
 ## Deploy on Vercel
 
 The repo includes [`api/index.js`](api/index.js) and [`vercel.json`](vercel.json). In **Vercel → Project → Settings → Environment Variables**, add **`MONGODB_URI`** (and optionally **`DEFAULT_CALLBACK_SLA_HOURS`**). Allow MongoDB Atlas access from the internet (`0.0.0.0/0` under Network Access for demos). Seed once from your laptop with the same URI: `npm run seed`.
+
+**Build step:** the `build` script in `package.json` is a no-op so Vercel’s default `npm run build` succeeds (this project has no compile step).
+
+**Deploy time:** most of the wait is Vercel cloning the repo, running **`npm ci`** (uses `package-lock.json` for a fast, cacheable install), and bundling the Node function — not your app “compiling.” A **cold** first request after deploy can feel slow because MongoDB must connect; later requests reuse the warm function when possible.
 
 If the function shows **crashed** or **503**: confirm `MONGODB_URI` is set for **Production** (and Preview if you test previews). In Vercel **Project → Settings → General**, set the framework preset to **Other** if the builder mistakenly detects Fastify from an older deploy.

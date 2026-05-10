@@ -1,64 +1,64 @@
 {
   "customers": [
     {
-      "full_name": "Ahmed Al-Farsi",
-      "phone_number": "+971501112233",
+      "full_name": "Ahmad Al-Hassan",
+      "phone_number": "+963941112233",
       "preferred_language": "ar",
-      "city": "Dubai",
+      "city": "Damascus",
       "plan_name": "Premium 300GB",
-      "balance_due": 120.5,
+      "balance_due": 125000,
       "sim_status": "active"
     },
     {
-      "full_name": "Sarah Johnson",
-      "phone_number": "+971509998877",
+      "full_name": "Sarah Mitchell",
+      "phone_number": "+963958887766",
       "preferred_language": "en",
-      "city": "Abu Dhabi",
+      "city": "Aleppo",
       "plan_name": "Family Unlimited",
       "balance_due": 0,
       "sim_status": "active"
     },
     {
-      "full_name": "Omar Khalid",
-      "phone_number": "+971552220011",
+      "full_name": "Omar Khoury",
+      "phone_number": "+963944556677",
       "preferred_language": "ar",
-      "city": "Sharjah",
+      "city": "Homs",
       "plan_name": "Starter 50GB",
-      "balance_due": 40,
+      "balance_due": 42000,
       "sim_status": "pending"
     },
     {
-      "full_name": "Priya Sharma",
-      "phone_number": "+971554433221",
+      "full_name": "Layla Mahmoud",
+      "phone_number": "+963991223344",
       "preferred_language": "en",
-      "city": "Dubai",
+      "city": "Latakia",
       "plan_name": "Business Pro 100GB",
-      "balance_due": 289.0,
+      "balance_due": 310000,
       "sim_status": "active"
     },
     {
-      "full_name": "Youssef Haddad",
-      "phone_number": "+971507776655",
+      "full_name": "Khalid Issa",
+      "phone_number": "+963933445566",
       "preferred_language": "ar",
-      "city": "Ajman",
+      "city": "Tartus",
       "plan_name": "Basic 20GB",
-      "balance_due": 15.25,
+      "balance_due": 18500,
       "sim_status": "blocked"
     },
     {
-      "full_name": "Emma Wilson",
-      "phone_number": "+971508889900",
+      "full_name": "Rana Abboud",
+      "phone_number": "+963977889900",
       "preferred_language": "en",
-      "city": "Ras Al Khaimah",
+      "city": "Hama",
       "plan_name": "Premium 300GB",
       "balance_due": 0,
       "sim_status": "active"
     },
     {
       "full_name": "Guest Line (no profile match)",
-      "phone_number": "+971501234567",
+      "phone_number": "+963951234567",
       "preferred_language": "en",
-      "city": "Dubai",
+      "city": "Damascus",
       "plan_name": "Pay As You Go",
       "balance_due": 0,
       "sim_status": "active"
@@ -66,43 +66,43 @@
   ],
   "billing_records": [
     {
-      "phone_number": "+971501112233",
-      "amount_due": 120.5,
+      "phone_number": "+963941112233",
+      "amount_due": 125000,
       "due_date": "2026-05-15",
       "status": "pending"
     },
     {
-      "phone_number": "+971509998877",
+      "phone_number": "+963958887766",
       "amount_due": 0,
       "due_date": "2026-05-15",
       "status": "paid"
     },
     {
-      "phone_number": "+971552220011",
-      "amount_due": 40,
+      "phone_number": "+963944556677",
+      "amount_due": 42000,
       "due_date": "2026-05-18",
       "status": "pending"
     },
     {
-      "phone_number": "+971554433221",
-      "amount_due": 289.0,
+      "phone_number": "+963991223344",
+      "amount_due": 310000,
       "due_date": "2026-05-01",
       "status": "overdue"
     },
     {
-      "phone_number": "+971507776655",
-      "amount_due": 15.25,
+      "phone_number": "+963933445566",
+      "amount_due": 18500,
       "due_date": "2026-05-20",
       "status": "pending"
     },
     {
-      "phone_number": "+971508889900",
+      "phone_number": "+963977889900",
       "amount_due": 0,
       "due_date": "2026-06-01",
       "status": "paid"
     },
     {
-      "phone_number": "+971501234567",
+      "phone_number": "+963951234567",
       "amount_due": 0,
       "due_date": "2026-06-10",
       "status": "paid"
@@ -110,7 +110,7 @@
   ],
   "complaints": [
     {
-      "phone_number": "+971501112233",
+      "phone_number": "+963941112233",
       "issue_type": "billing",
       "description": "Double charge appeared on last month invoice for roaming add-on.",
       "priority": "medium",
@@ -118,15 +118,15 @@
       "callback_eta_hours": 2
     },
     {
-      "phone_number": "+971554433221",
+      "phone_number": "+963991223344",
       "issue_type": "network",
-      "description": "No network outage in Dubai Marina area since yesterday evening.",
+      "description": "Intermittent signal drops in Latakia Corniche area since yesterday evening.",
       "priority": "high",
       "status": "in_progress",
       "callback_eta_hours": 2
     },
     {
-      "phone_number": "+971508889900",
+      "phone_number": "+963977889900",
       "issue_type": "general",
       "description": "Request callback to discuss upgrading to enterprise plan.",
       "priority": "low",
@@ -134,9 +134,9 @@
       "callback_eta_hours": 2
     },
     {
-      "phone_number": "+971507776655",
+      "phone_number": "+963933445566",
       "issue_type": "billing",
-      "description": "Slow data speeds when streaming at home.",
+      "description": "Slow data speeds when streaming at home in Tartus.",
       "priority": "medium",
       "status": "open",
       "callback_eta_hours": 2
@@ -149,7 +149,8 @@
       "type": "prepaid",
       "categories": ["social", "chat"],
       "data_gb": 25,
-      "price_monthly_aed": 79,
+      "price_monthly": 95000,
+      "currency": "SYP",
       "description": "Enough data for messaging and light social browsing.",
       "sort_order": 10
     },
@@ -159,7 +160,8 @@
       "type": "prepaid",
       "categories": ["streaming", "gaming"],
       "data_gb": 100,
-      "price_monthly_aed": 189,
+      "price_monthly": 225000,
+      "currency": "SYP",
       "description": "HD streaming and online gaming on mobile.",
       "sort_order": 20
     },
@@ -169,7 +171,8 @@
       "type": "postpaid",
       "categories": ["streaming", "social"],
       "data_gb": 999,
-      "price_monthly_aed": 399,
+      "price_monthly": 485000,
+      "currency": "SYP",
       "description": "Four lines, unlimited national data fair-use policy applies.",
       "sort_order": 30
     },
@@ -179,7 +182,8 @@
       "type": "internet",
       "categories": ["streaming", "gaming"],
       "data_gb": 0,
-      "price_monthly_aed": 349,
+      "price_monthly": 410000,
+      "currency": "SYP",
       "description": "Fiber-to-home unlimited quota where fiber is available.",
       "sort_order": 40
     },
@@ -189,7 +193,8 @@
       "type": "data",
       "categories": ["gaming", "streaming"],
       "data_gb": 50,
-      "price_monthly_aed": 99,
+      "price_monthly": 118000,
+      "currency": "SYP",
       "description": "Add-on pack for existing postpaid lines.",
       "sort_order": 50
     },
@@ -199,7 +204,8 @@
       "type": "prepaid",
       "categories": ["social"],
       "data_gb": 5,
-      "price_monthly_aed": 29,
+      "price_monthly": 35000,
+      "currency": "SYP",
       "description": "Entry prepaid for light users.",
       "sort_order": 5
     }
@@ -207,7 +213,7 @@
   "offers": [
     {
       "title": "Summer Double Data",
-      "description": "Get double data for 3 months on selected prepaid packs.",
+      "description": "Get double data for 3 months on selected prepaid packs nationwide.",
       "valid_until": "2026-09-30",
       "discount_percent": null,
       "promo_code": "SUMMER26",
@@ -215,7 +221,7 @@
     },
     {
       "title": "Fiber Install Waived",
-      "description": "Free installation on new Home Fiber subscriptions in eligible areas.",
+      "description": "Free installation on new Home Fiber subscriptions in eligible Damascus and Aleppo areas.",
       "valid_until": "2026-12-31",
       "discount_percent": 100,
       "promo_code": "FIBERFREE",
@@ -238,52 +244,84 @@
   ],
   "coverage_areas": [
     {
-      "city": "Dubai",
-      "area": "Dubai Marina",
+      "city": "Damascus",
+      "area": "Mazzeh",
       "fiber_available": true,
       "five_g_available": true,
       "four_g_available": true,
-      "notes": "Full 5G and fiber rollout."
+      "notes": "Strong 4G/5G; fiber available in most blocks."
     },
     {
-      "city": "Dubai",
-      "area": "Downtown",
+      "city": "Damascus",
+      "area": "Old City",
+      "fiber_available": false,
+      "five_g_available": true,
+      "four_g_available": true,
+      "notes": "Historic center; mobile coverage solid; fiber rollout limited."
+    },
+    {
+      "city": "Damascus",
+      "area": "Kafr Sousa",
       "fiber_available": true,
       "five_g_available": true,
       "four_g_available": true,
       "notes": "Business district priority coverage."
     },
     {
-      "city": "Abu Dhabi",
-      "area": "Corniche",
+      "city": "Aleppo",
+      "area": "Aziziyah",
       "fiber_available": true,
       "five_g_available": true,
       "four_g_available": true,
-      "notes": "Fiber available on most towers."
+      "notes": "Fiber on main avenues; 5G expanding."
     },
     {
-      "city": "Sharjah",
-      "area": "Al Majaz",
+      "city": "Aleppo",
+      "area": "New Aleppo",
       "fiber_available": false,
       "five_g_available": true,
       "four_g_available": true,
-      "notes": "5G expanding; fiber pilot areas — ask agent for eligibility."
+      "notes": "5G and 4G; fiber pilot — confirm address for eligibility."
     },
     {
-      "city": "Ajman",
+      "city": "Homs",
       "area": "",
       "fiber_available": false,
       "five_g_available": true,
       "four_g_available": true,
-      "notes": "City-wide 4G/5G; fiber scheduled Q4."
+      "notes": "City-wide mobile; fiber scheduled in select districts."
     },
     {
-      "city": "Ras Al Khaimah",
-      "area": "Al Nakheel",
+      "city": "Latakia",
+      "area": "Corniche",
+      "fiber_available": true,
+      "five_g_available": true,
+      "four_g_available": true,
+      "notes": "Coastal corridor; good fiber penetration near the seafront."
+    },
+    {
+      "city": "Hama",
+      "area": "",
       "fiber_available": false,
       "five_g_available": true,
       "four_g_available": true,
-      "notes": "Mountain areas may have limited 5G."
+      "notes": "Full 4G/5G mobile; fiber in planning."
+    },
+    {
+      "city": "Tartus",
+      "area": "Port area",
+      "fiber_available": false,
+      "five_g_available": true,
+      "four_g_available": true,
+      "notes": "Mobile strong; hilly outskirts may vary."
+    },
+    {
+      "city": "Deir ez-Zor",
+      "area": "",
+      "fiber_available": false,
+      "five_g_available": false,
+      "four_g_available": true,
+      "notes": "4G primary; 5G limited; no fiber yet."
     }
   ]
 }

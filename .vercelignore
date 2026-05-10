@@ -1,0 +1,3 @@
+# Optional files — not used by api/index.js at runtime (smaller upload, slightly faster deploys)
+docs
+data

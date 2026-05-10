@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "Telecom demo API (Express + MongoDB)",
   "engines": {
-    "node": ">=18"
+    "node": "20.x"
   },
   "type": "module",
   "main": "src/server.js",
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "seed": "node src/seed.js"
+    "seed": "node src/seed.js",
+    "build": "node -e \"process.exit(0)\""
   },
   "dependencies": {
     "cors": "^2.8.5",

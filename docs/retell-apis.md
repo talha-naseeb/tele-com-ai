@@ -10,8 +10,8 @@ Use your public base URL (ngrok or Vercel), e.g. `https://abc123.ngrok-free.app`
 
 | Kind | Where | Notes |
 | --- | --- | --- |
-| Path param | `{phoneNumber}`, `{ticketId}` | Encode `+` as **`%2B`** in URLs if the tool sends the path literally (e.g. `%2B971501112233`). |
-| Query param | `?city=Dubai&area=...` | **GET only.** Encode spaces as **`%20`** (e.g. `city=Ras%20Al%20Khaimah`). |
+| Path param | `{phoneNumber}`, `{ticketId}` | Encode `+` as **`%2B`** in URLs if the tool sends the path literally (e.g. `%2B963941112233`). |
+| Query param | `?city=Damascus&area=...` | **GET only.** Encode spaces as **`%20`** (e.g. `city=Deir%20ez-Zor`). |
 | JSON body | `POST` endpoints below | **Recommended for agents.** Same fields as queries where applicable. |
 
 Retell may send a wrapper `{ "call", "name", "args" }`; the server **unwraps `args`** so handlers still see flat fields (`city`, `phoneNumber`, etc.).
@@ -34,7 +34,7 @@ Example POST:
 POST /customers/snapshot
 Content-Type: application/json
 
-{ "phoneNumber": "+971501112233", "usagePreference": "social" }
+{ "phoneNumber": "+963941112233", "usagePreference": "social" }
 ```
 
 Returns: `found`, `customer`, `balance`, `bill`, `sim`, `suggestedDataPack`.
@@ -61,7 +61,7 @@ Returns: `complaintId`, `phoneNumber`, `status`, `callbackEtaHours`, `callbackMe
 | Method | `POST` |
 | Path | `/tools/new-connection-callback` |
 | Headers | `Content-Type: application/json` |
-| Body | **`fullName`** (≥2 chars), **`phoneNumber`** (≥8, contact for callback), **`city`** (required). Optional: **`area`**, **`planPreference`** (e.g. prepaid, postpaid, fiber), **`notes`**, **`preferredLanguage`** (`en` \| `ar`, default `en`). |
+| Body | **`fullName`** (≥2 chars), **`phoneNumber`** (≥8, contact for callback; use **+963…** for Syria), **`city`** (e.g. Damascus, Aleppo, Homs). Optional: **`area`**, **`planPreference`** (e.g. prepaid, postpaid, fiber), **`notes`**, **`preferredLanguage`** (`en` \| `ar`, default `en`). |
 
 Returns: `connectionRequestId`, `phoneNumber`, `fullName`, `city`, optional `area`, optional `planPreference`, `status`, `callbackEtaHours`, `callbackMessage`.
 
@@ -132,10 +132,10 @@ No parameters. Returns: `count`, `offers[]` (active, not past `valid_until`).
 | | |
 | --- | --- |
 | **Recommended** | `POST` `/coverage` |
-| Body | **`city`** (required) — must match seeded cities (e.g. Dubai, Abu Dhabi, Sharjah, …). |
+| Body | **`city`** (required) — must match seeded cities (e.g. Damascus, Aleppo, Homs, Latakia, Tartus, Deir ez-Zor, …). |
 | Body | **`area`** (optional) — narrows when multiple zones exist for the same city. |
 | Body | **`serviceType`** (optional) — `fiber`, `5g`, `4g`; when set, response may include **`service_summary`**. |
-| **Legacy** | `GET` `/coverage?city=Dubai&area=Dubai%20Marina&serviceType=fiber` |
+| **Legacy** | `GET` `/coverage?city=Damascus&area=Mazzeh&serviceType=fiber` |
 
 Example POST:
 
@@ -143,7 +143,7 @@ Example POST:
 POST /coverage
 Content-Type: application/json
 
-{ "city": "Dubai", "area": "Dubai Marina", "serviceType": "fiber" }
+{ "city": "Damascus", "area": "Mazzeh", "serviceType": "fiber" }
 ```
 
 **400** if `city` is missing or a literal `{{city}}` / `{{area}}` / `{{serviceType}}` placeholder was sent.
