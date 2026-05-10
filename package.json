@@ -1,7 +1,7 @@
 {
   "name": "telecom-ai-demo",
   "version": "1.0.0",
-  "description": "Telecom inbound AI calling demo backend",
+  "description": "Telecom demo API (Express + MongoDB)",
   "engines": {
     "node": ">=18"
   },
@@ -13,9 +13,9 @@
     "seed": "node src/seed.js"
   },
   "dependencies": {
-    "@fastify/cors": "^10.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "fastify": "^5.0.0",
+    "express": "^4.21.2",
     "mongoose": "^8.9.3",
     "zod": "^3.23.8"
   }

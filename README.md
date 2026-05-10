@@ -1,4 +1,4 @@
-# Telecom demo backend (Fastify + MongoDB)
+# Telecom demo backend (Express + MongoDB)
 
 Small API for demo customer data and complaint callbacks. Uses **MongoDB Atlas** (or any MongoDB URI).
 
@@ -16,6 +16,14 @@ npm run dev
 
 Server default: `http://localhost:8080` (override with **`PORT`**).
 
+[`data/seed-data.json`](data/seed-data.json) holds demo customers, billing rows, and sample complaints. After `npm run seed`, try GET `/customers/+971501112233` or `/customers/+971554433221`.
+
+### MongoDB Compass
+
+Use the **same** URI as **`MONGODB_URI`**. In the connection string, the **database** is the path segment after the host — e.g. `…mongodb.net/telecom_demo?…` → open database **`telecom_demo`**. If you leave it out (`…mongodb.net/?…`), data often ends up in **`test`**, so you will not see it under a named DB.
+
+After seeding, open these collections: **`customers`**, **`billing_records`**, **`complaints`**.
+
 Optional: drop obsolete collections from older versions of this repo (`calls`, `transcripts`, `agentactions`, `newconnectionrequests`) if they exist in your database.
 
 ## Project layout
@@ -24,7 +32,7 @@ Optional: drop obsolete collections from older versions of this repo (`calls`, `
 src/
   server.js              # HTTP server entry (local dev / production Node)
   seed.js                # Loads data/seed-data.json into MongoDB
-  app-factory.js         # Builds Fastify (`createApp`; not named app.js — avoids Vercel Fastify auto-detection)
+  app-factory.js         # Builds Express (`createApp`)
   config/index.js        # Environment config
   lib/db.js              # Mongoose connection
   models/index.js        # Schemas
@@ -58,4 +66,4 @@ curl -s -X POST http://localhost:8080/tools/register-complaint-callback \
 
 The repo includes [`api/index.js`](api/index.js) and [`vercel.json`](vercel.json). In **Vercel → Project → Settings → Environment Variables**, add **`MONGODB_URI`** (and optionally **`DEFAULT_CALLBACK_SLA_HOURS`**). Allow MongoDB Atlas access from the internet (`0.0.0.0/0` under Network Access for demos). Seed once from your laptop with the same URI: `npm run seed`.
 
-If the function shows **crashed** or **503**: confirm `MONGODB_URI` is set for **Production** (and Preview if you test previews). Do not name the Fastify factory `src/app.js` — this repo uses [`src/app-factory.js`](src/app-factory.js) so Vercel does not treat it as a second framework entry.
+If the function shows **crashed** or **503**: confirm `MONGODB_URI` is set for **Production** (and Preview if you test previews). In Vercel **Project → Settings → General**, set the framework preset to **Other** if the builder mistakenly detects Fastify from an older deploy.

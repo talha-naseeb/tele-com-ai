@@ -1,27 +1,32 @@
-import Fastify from 'fastify';
-import cors from '@fastify/cors';
+import cors from 'cors';
+import express from 'express';
 import { registerRoutes } from './routes/index.js';
 import { connectDb } from './lib/db.js';
 
-/** Named `app-factory.js` (not `app.js`) so Vercel does not treat this file as the framework entrypoint. */
+/** Builds the Express app (shared by `server.js` and `api/index.js` on Vercel). */
 
 export async function createApp() {
   await connectDb();
 
-  const app = Fastify({ logger: true });
+  const app = express();
+  app.disable('x-powered-by');
+  app.use(cors({ origin: true }));
+  app.use(express.json());
 
-  await app.register(cors, { origin: true });
-  await registerRoutes(app);
+  registerRoutes(app);
 
-  app.setErrorHandler((error, _request, reply) => {
-    app.log.error(error);
-    if (error?.statusCode === 400) {
-      return reply.status(400).send({ message: error.message || 'Bad request' });
+  app.use((err, req, res, next) => {
+    console.error(err);
+    if (res.headersSent) {
+      return next(err);
     }
-    if (error?.name === 'ZodError') {
-      return reply.status(400).send({ message: 'Invalid payload', issues: error.issues });
+    if (err.status === 400 || err.statusCode === 400) {
+      return res.status(400).json({ message: err.message || 'Bad request' });
     }
-    return reply.status(500).send({ message: 'Internal server error' });
+    if (err.name === 'ZodError') {
+      return res.status(400).json({ message: 'Invalid payload', issues: err.issues });
+    }
+    res.status(500).json({ message: 'Internal server error' });
   });
 
   return app;

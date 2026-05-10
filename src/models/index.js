@@ -38,7 +38,10 @@ const complaintSchema = new Schema(
   { timestamps: { createdAt: 'created_at', updatedAt: false } }
 );
 
-export const Customer = mongoose.models.Customer || mongoose.model('Customer', customerSchema);
+/** Third argument = actual MongoDB collection name (visible in Compass). */
+export const Customer =
+  mongoose.models.Customer || mongoose.model('Customer', customerSchema, 'customers');
 export const BillingRecord =
-  mongoose.models.BillingRecord || mongoose.model('BillingRecord', billingRecordSchema);
-export const Complaint = mongoose.models.Complaint || mongoose.model('Complaint', complaintSchema);
+  mongoose.models.BillingRecord || mongoose.model('BillingRecord', billingRecordSchema, 'billing_records');
+export const Complaint =
+  mongoose.models.Complaint || mongoose.model('Complaint', complaintSchema, 'complaints');

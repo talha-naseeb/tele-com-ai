@@ -1,6 +1,6 @@
 /**
  * Vercel Serverless entry: rewrites send traffic here with ?__v_path=$1
- * so Fastify sees paths like /health at the root.
+ * so Express sees paths like /health at the root.
  */
 import { createApp } from '../src/app-factory.js';
 
@@ -31,7 +31,7 @@ function fixPathFromRewrite(req) {
   }
 }
 
-/** Wait until the Node response is finished (required on Vercel or the function may exit too early). */
+/** Wait until the Node response is finished (required on Vercel). */
 function awaitResponseEnd(res) {
   return new Promise((resolve, reject) => {
     let settled = false;
@@ -63,14 +63,12 @@ export default async function handler(req, res) {
 
   try {
     const app = await getApp();
-    await app.ready();
-
     const responseDone = awaitResponseEnd(res);
 
     try {
-      app.server.emit('request', req, res);
-    } catch (emitErr) {
-      console.error('emit request failed:', emitErr);
+      app(req, res);
+    } catch (routeErr) {
+      console.error('Express dispatch failed:', routeErr);
       if (!res.headersSent) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'application/json');

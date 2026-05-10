@@ -2,13 +2,16 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { connectDb, mongoose } from './lib/db.js';
-import { BillingRecord, Customer } from './models/index.js';
+import { BillingRecord, Complaint, Customer } from './models/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function seed() {
   await connectDb();
+
+  console.log(`[seed] Database name: "${mongoose.connection.name}" (must match the DB you open in Compass)`);
+  console.log('[seed] Collections: customers, billing_records, complaints');
 
   const filePath = path.join(__dirname, '..', 'data', 'seed-data.json');
   const raw = await fs.readFile(filePath, 'utf8');
@@ -45,7 +48,25 @@ async function seed() {
     });
   }
 
-  console.log('Seed completed successfully.');
+  await Complaint.deleteMany({});
+
+  const complaints = Array.isArray(data.complaints) ? data.complaints : [];
+  for (const row of complaints) {
+    const customer = await Customer.findOne({ phone_number: row.phone_number }).select('_id').lean();
+    await Complaint.create({
+      customer_id: customer?._id ?? null,
+      issue_type: row.issue_type,
+      description: row.description,
+      priority: row.priority ?? 'medium',
+      status: row.status ?? 'open',
+      callback_requested: true,
+      callback_eta_hours: row.callback_eta_hours ?? 2
+    });
+  }
+
+  console.log(
+    `Seed completed: ${data.customers.length} customers, ${data.billing_records.length} bills, ${complaints.length} complaints.`
+  );
   await mongoose.disconnect();
 }
 
