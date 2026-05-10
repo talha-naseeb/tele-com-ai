@@ -1,0 +1,22 @@
+{
+  "name": "telecom-ai-demo",
+  "version": "1.0.0",
+  "description": "Telecom inbound AI calling demo backend",
+  "engines": {
+    "node": ">=18"
+  },
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/seed.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^5.0.0",
+    "mongoose": "^8.9.3",
+    "zod": "^3.23.8"
+  }
+}

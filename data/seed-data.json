@@ -1,0 +1,51 @@
+{
+  "customers": [
+    {
+      "full_name": "Ahmed Al-Farsi",
+      "phone_number": "+971501112233",
+      "preferred_language": "ar",
+      "city": "Dubai",
+      "plan_name": "Premium 300GB",
+      "balance_due": 120.5,
+      "sim_status": "active"
+    },
+    {
+      "full_name": "Sarah Johnson",
+      "phone_number": "+971509998877",
+      "preferred_language": "en",
+      "city": "Abu Dhabi",
+      "plan_name": "Family Unlimited",
+      "balance_due": 0,
+      "sim_status": "active"
+    },
+    {
+      "full_name": "Omar Khalid",
+      "phone_number": "+971552220011",
+      "preferred_language": "ar",
+      "city": "Sharjah",
+      "plan_name": "Starter 50GB",
+      "balance_due": 40,
+      "sim_status": "pending"
+    }
+  ],
+  "billing_records": [
+    {
+      "phone_number": "+971501112233",
+      "amount_due": 120.5,
+      "due_date": "2026-05-15",
+      "status": "pending"
+    },
+    {
+      "phone_number": "+971509998877",
+      "amount_due": 0,
+      "due_date": "2026-05-15",
+      "status": "paid"
+    },
+    {
+      "phone_number": "+971552220011",
+      "amount_due": 40,
+      "due_date": "2026-05-18",
+      "status": "pending"
+    }
+  ]
+}
