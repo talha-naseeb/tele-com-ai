@@ -14,6 +14,16 @@ async function getApp() {
   return cachedApp;
 }
 
+/**
+ * Rewrites pass the original path in `?__v_path=`. Query strings use
+ * application/x-www-form-urlencoded rules: literal `+` becomes a space when
+ * parsed. E.164 paths like `/customers/+971…` then arrive as `customers/ 971…`
+ * and no longer match Mongo / validation. Restore `+` before the leading digit.
+ */
+function normalizeRewrittenPath(vPath) {
+  return vPath.replace(/\/\s+(?=\d)/g, '/+');
+}
+
 function fixPathFromRewrite(req) {
   try {
     const host = req.headers.host || 'localhost';
@@ -21,7 +31,7 @@ function fixPathFromRewrite(req) {
     if (!url.searchParams.has('__v_path')) {
       return;
     }
-    const vPath = url.searchParams.get('__v_path') ?? '';
+    const vPath = normalizeRewrittenPath(url.searchParams.get('__v_path') ?? '');
     url.searchParams.delete('__v_path');
     const q = url.searchParams.toString();
     const path = vPath === '' ? '/' : `/${vPath.replace(/^\/+/, '')}`;

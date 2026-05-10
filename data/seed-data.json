@@ -141,5 +141,149 @@
       "status": "open",
       "callback_eta_hours": 2
     }
+  ],
+  "packages": [
+    {
+      "slug": "prepaid-social-25gb",
+      "name": "Social Lite 25GB",
+      "type": "prepaid",
+      "categories": ["social", "chat"],
+      "data_gb": 25,
+      "price_monthly_aed": 79,
+      "description": "Enough data for messaging and light social browsing.",
+      "sort_order": 10
+    },
+    {
+      "slug": "prepaid-stream-100gb",
+      "name": "Stream Max 100GB",
+      "type": "prepaid",
+      "categories": ["streaming", "gaming"],
+      "data_gb": 100,
+      "price_monthly_aed": 189,
+      "description": "HD streaming and online gaming on mobile.",
+      "sort_order": 20
+    },
+    {
+      "slug": "postpaid-family-unlimited",
+      "name": "Family Unlimited Postpaid",
+      "type": "postpaid",
+      "categories": ["streaming", "social"],
+      "data_gb": 999,
+      "price_monthly_aed": 399,
+      "description": "Four lines, unlimited national data fair-use policy applies.",
+      "sort_order": 30
+    },
+    {
+      "slug": "internet-home-fiber-500",
+      "name": "Home Fiber 500 Mbps",
+      "type": "internet",
+      "categories": ["streaming", "gaming"],
+      "data_gb": 0,
+      "price_monthly_aed": 349,
+      "description": "Fiber-to-home unlimited quota where fiber is available.",
+      "sort_order": 40
+    },
+    {
+      "slug": "data-addon-50gb",
+      "name": "Mobile Data Boost 50GB",
+      "type": "data",
+      "categories": ["gaming", "streaming"],
+      "data_gb": 50,
+      "price_monthly_aed": 99,
+      "description": "Add-on pack for existing postpaid lines.",
+      "sort_order": 50
+    },
+    {
+      "slug": "prepaid-basics-5gb",
+      "name": "Basics 5GB",
+      "type": "prepaid",
+      "categories": ["social"],
+      "data_gb": 5,
+      "price_monthly_aed": 29,
+      "description": "Entry prepaid for light users.",
+      "sort_order": 5
+    }
+  ],
+  "offers": [
+    {
+      "title": "Summer Double Data",
+      "description": "Get double data for 3 months on selected prepaid packs.",
+      "valid_until": "2026-09-30",
+      "discount_percent": null,
+      "promo_code": "SUMMER26",
+      "active": true
+    },
+    {
+      "title": "Fiber Install Waived",
+      "description": "Free installation on new Home Fiber subscriptions in eligible areas.",
+      "valid_until": "2026-12-31",
+      "discount_percent": 100,
+      "promo_code": "FIBERFREE",
+      "active": true
+    },
+    {
+      "title": "Family Plan Bundle",
+      "description": "Add a second line at 50% off for 6 months on Family Unlimited.",
+      "valid_until": "2026-08-15",
+      "discount_percent": 50,
+      "promo_code": "FAMILY50",
+      "active": true
+    },
+    {
+      "title": "Expired placeholder",
+      "description": "Should not appear in API after seed filter.",
+      "valid_until": "2020-01-01",
+      "active": true
+    }
+  ],
+  "coverage_areas": [
+    {
+      "city": "Dubai",
+      "area": "Dubai Marina",
+      "fiber_available": true,
+      "five_g_available": true,
+      "four_g_available": true,
+      "notes": "Full 5G and fiber rollout."
+    },
+    {
+      "city": "Dubai",
+      "area": "Downtown",
+      "fiber_available": true,
+      "five_g_available": true,
+      "four_g_available": true,
+      "notes": "Business district priority coverage."
+    },
+    {
+      "city": "Abu Dhabi",
+      "area": "Corniche",
+      "fiber_available": true,
+      "five_g_available": true,
+      "four_g_available": true,
+      "notes": "Fiber available on most towers."
+    },
+    {
+      "city": "Sharjah",
+      "area": "Al Majaz",
+      "fiber_available": false,
+      "five_g_available": true,
+      "four_g_available": true,
+      "notes": "5G expanding; fiber pilot areas — ask agent for eligibility."
+    },
+    {
+      "city": "Ajman",
+      "area": "",
+      "fiber_available": false,
+      "five_g_available": true,
+      "four_g_available": true,
+      "notes": "City-wide 4G/5G; fiber scheduled Q4."
+    },
+    {
+      "city": "Ras Al Khaimah",
+      "area": "Al Nakheel",
+      "fiber_available": false,
+      "five_g_available": true,
+      "four_g_available": true,
+      "notes": "Mountain areas may have limited 5G."
+    }
   ]
 }

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { BillingRecord, Complaint, Customer } from '../models/index.js';
+import { BillingRecord, Complaint, ConnectionRequest, Customer } from '../models/index.js';
 import { detectPriorityFromIssue } from '../utils/priority.js';
 import { canonicalInternationalPhone } from '../utils/phone.js';
 import { config } from '../config/index.js';
@@ -100,6 +100,48 @@ export async function registerComplaint({ phoneNumber, issueType, description })
     status: doc.status,
     callbackEtaHours: doc.callback_eta_hours,
     callbackMessage: `Our human agent will call you within ${doc.callback_eta_hours} hours.`
+  };
+}
+
+/**
+ * Capture a new-line / new-customer signup lead from the voice agent.
+ * @param {{ fullName: string, phoneNumber: string, city: string, area?: string, planPreference?: string, notes?: string, preferredLanguage?: 'en'|'ar' }} payload
+ */
+export async function registerNewConnection(payload) {
+  const phone = canonicalInternationalPhone(payload.phoneNumber);
+  if (!phone || phone.replace(/\D/g, '').length < 8) {
+    throw Object.assign(new Error('Invalid phone number.'), { statusCode: 400 });
+  }
+
+  const fullName = payload.fullName.trim();
+  const city = payload.city.trim();
+  if (!fullName || !city) {
+    throw Object.assign(new Error('fullName and city are required.'), { statusCode: 400 });
+  }
+
+  const preferredLanguage = payload.preferredLanguage === 'ar' ? 'ar' : 'en';
+
+  const doc = await ConnectionRequest.create({
+    full_name: fullName,
+    phone_number: phone,
+    city,
+    area: payload.area?.trim() ?? '',
+    plan_preference: payload.planPreference?.trim() ?? '',
+    notes: payload.notes?.trim() ?? '',
+    preferred_language: preferredLanguage,
+    callback_eta_hours: config.defaultCallbackSlaHours
+  });
+
+  return {
+    connectionRequestId: doc._id.toString(),
+    phoneNumber: phone,
+    fullName: doc.full_name,
+    city: doc.city,
+    area: doc.area || undefined,
+    planPreference: doc.plan_preference || undefined,
+    status: doc.status,
+    callbackEtaHours: doc.callback_eta_hours,
+    callbackMessage: `A sales specialist will call ${phone} within ${doc.callback_eta_hours} hours to complete your new connection.`
   };
 }
 
