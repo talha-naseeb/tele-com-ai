@@ -1,5 +1,12 @@
+import mongoose from 'mongoose';
 import { z } from 'zod';
-import { getComplaintTicket, getCustomerSnapshot, registerComplaint } from '../services/telecom.service.js';
+import {
+  getComplaintTicket,
+  getComplaintsByPhone,
+  getCustomerSnapshot,
+  getLatestComplaintTicketByPhone,
+  registerComplaint
+} from '../services/telecom.service.js';
 
 function wrap(handler) {
   return (req, res, next) => {
@@ -49,10 +56,70 @@ export function registerRoutes(app) {
   );
 
   app.get(
+    '/complaints/by-phone/:phoneNumber',
+    wrap(async (req, res) => {
+      let phone = req.params.phoneNumber || '';
+      try {
+        phone = decodeURIComponent(phone);
+      } catch {
+        /* ignore malformed encoding */
+      }
+      const digits = phone.replace(/\D/g, '');
+      if (digits.length < 8) {
+        return res.status(400).json({ message: 'Invalid phone number.' });
+      }
+
+      const data = await getComplaintsByPhone(phone);
+      res.json(data);
+    })
+  );
+
+  /**
+   * GetComplaintTicket by phone — same JSON shape as GET /tickets/:ticketId, no Mongo id required.
+   * Register this in Retell as the primary "ticket status" tool (use latest complaint for that line).
+   */
+  app.get(
+    '/tickets/by-phone/:phoneNumber',
+    wrap(async (req, res) => {
+      let phone = req.params.phoneNumber || '';
+      try {
+        phone = decodeURIComponent(phone);
+      } catch {
+        /* ignore */
+      }
+      const digits = phone.replace(/\D/g, '');
+      if (digits.length < 8) {
+        return res.status(400).json({ message: 'Invalid phone number.' });
+      }
+
+      const ticket = await getLatestComplaintTicketByPhone(phone);
+      if (!ticket) {
+        return res.status(404).json({
+          message: 'No complaint found for this number. Use POST /tools/register-complaint-callback to create one.'
+        });
+      }
+      res.json(ticket);
+    })
+  );
+
+  app.get(
     '/tickets/:ticketId',
     wrap(async (req, res) => {
-      const ticket = await getComplaintTicket(req.params.ticketId);
-      res.json(ticket || { message: 'Ticket not found.' });
+      const { ticketId } = req.params;
+      if (!mongoose.Types.ObjectId.isValid(ticketId)) {
+        return res.status(400).json({
+          message:
+            'Invalid ticket id. Use GET /tickets/by-phone/:phoneNumber with the customer mobile, or a valid complaint id from POST /tools/register-complaint-callback — not the "{{ticketId}}" placeholder.'
+        });
+      }
+      const ticket = await getComplaintTicket(ticketId);
+      if (!ticket) {
+        return res.status(404).json({
+          message:
+            'Ticket not found. Try GET /tickets/by-phone/:phoneNumber or GET /complaints/by-phone/:phoneNumber if the customer only has their mobile.'
+        });
+      }
+      res.json(ticket);
     })
   );
 }

@@ -50,8 +50,10 @@ api/index.js             # Vercel serverless entry → src/app-factory.js
 | --- | --- | --- |
 | `GET` | `/health` | Liveness |
 | `GET` | `/customers/:phoneNumber` | Customer snapshot: profile, balance, bill, SIM, suggested add-on. Optional query `usagePreference` (e.g. `social`, `stream`) adjusts the suggestion. |
-| `POST` | `/tools/register-complaint-callback` | Body: `{ "phoneNumber", "issueType", "description" }` |
-| `GET` | `/tickets/:ticketId` | Complaint ticket by MongoDB id |
+| `POST` | `/tools/register-complaint-callback` | Body: `{ "phoneNumber", "issueType", "description" }`. Saves **`phone_number`** on the ticket (canonical `+digits`) and returns **`phoneNumber`** plus **`complaintId`** for Retell variables. |
+| `GET` | `/complaints/by-phone/:phoneNumber` | List complaints for that line (newest first). |
+| `GET` | `/tickets/by-phone/:phoneNumber` | **GetComplaintTicket by phone** — same fields as `/tickets/:id`, returns **latest** complaint for that number (use in Retell when the customer has no ticket id). |
+| `GET` | `/tickets/:ticketId` | Single complaint by MongoDB id (when `complaintId` is known). |
 
 ### Examples
 

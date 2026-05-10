@@ -55,6 +55,7 @@ async function seed() {
     const customer = await Customer.findOne({ phone_number: row.phone_number }).select('_id').lean();
     await Complaint.create({
       customer_id: customer?._id ?? null,
+      phone_number: row.phone_number,
       issue_type: row.issue_type,
       description: row.description,
       priority: row.priority ?? 'medium',

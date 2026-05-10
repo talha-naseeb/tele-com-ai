@@ -28,6 +28,8 @@ const billingRecordSchema = new Schema(
 const complaintSchema = new Schema(
   {
     customer_id: { type: Schema.Types.ObjectId, ref: 'Customer', default: null },
+    /** Denormalized from registration; used to list complaints when querying by phone without a profile match. */
+    phone_number: { type: String, index: true, sparse: true },
     issue_type: { type: String, required: true },
     description: { type: String, required: true },
     priority: { type: String, default: 'medium', enum: ['low', 'medium', 'high'] },
