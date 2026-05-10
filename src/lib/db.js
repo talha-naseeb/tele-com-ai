@@ -14,7 +14,11 @@ export async function connectDb() {
     return c;
   }
   try {
-    await mongoose.connect(config.mongodbUri);
+    await mongoose.connect(config.mongodbUri, {
+      serverSelectionTimeoutMS: 8000,
+      connectTimeoutMS: 8000,
+      socketTimeoutMS: 10000,
+    });
     const c = mongoose.connection;
     console.log(`[mongodb] Connected (host=${c.host}, db=${c.name})`);
     return c;
