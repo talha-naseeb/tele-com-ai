@@ -26,6 +26,42 @@
       "plan_name": "Starter 50GB",
       "balance_due": 40,
       "sim_status": "pending"
+    },
+    {
+      "full_name": "Priya Sharma",
+      "phone_number": "+971554433221",
+      "preferred_language": "en",
+      "city": "Dubai",
+      "plan_name": "Business Pro 100GB",
+      "balance_due": 289.0,
+      "sim_status": "active"
+    },
+    {
+      "full_name": "Youssef Haddad",
+      "phone_number": "+971507776655",
+      "preferred_language": "ar",
+      "city": "Ajman",
+      "plan_name": "Basic 20GB",
+      "balance_due": 15.25,
+      "sim_status": "blocked"
+    },
+    {
+      "full_name": "Emma Wilson",
+      "phone_number": "+971508889900",
+      "preferred_language": "en",
+      "city": "Ras Al Khaimah",
+      "plan_name": "Premium 300GB",
+      "balance_due": 0,
+      "sim_status": "active"
+    },
+    {
+      "full_name": "Guest Line (no profile match)",
+      "phone_number": "+971501234567",
+      "preferred_language": "en",
+      "city": "Dubai",
+      "plan_name": "Pay As You Go",
+      "balance_due": 0,
+      "sim_status": "active"
     }
   ],
   "billing_records": [
@@ -46,6 +82,64 @@
       "amount_due": 40,
       "due_date": "2026-05-18",
       "status": "pending"
+    },
+    {
+      "phone_number": "+971554433221",
+      "amount_due": 289.0,
+      "due_date": "2026-05-01",
+      "status": "overdue"
+    },
+    {
+      "phone_number": "+971507776655",
+      "amount_due": 15.25,
+      "due_date": "2026-05-20",
+      "status": "pending"
+    },
+    {
+      "phone_number": "+971508889900",
+      "amount_due": 0,
+      "due_date": "2026-06-01",
+      "status": "paid"
+    },
+    {
+      "phone_number": "+971501234567",
+      "amount_due": 0,
+      "due_date": "2026-06-10",
+      "status": "paid"
+    }
+  ],
+  "complaints": [
+    {
+      "phone_number": "+971501112233",
+      "issue_type": "billing",
+      "description": "Double charge appeared on last month invoice for roaming add-on.",
+      "priority": "medium",
+      "status": "open",
+      "callback_eta_hours": 2
+    },
+    {
+      "phone_number": "+971554433221",
+      "issue_type": "network",
+      "description": "No network outage in Dubai Marina area since yesterday evening.",
+      "priority": "high",
+      "status": "in_progress",
+      "callback_eta_hours": 2
+    },
+    {
+      "phone_number": "+971508889900",
+      "issue_type": "general",
+      "description": "Request callback to discuss upgrading to enterprise plan.",
+      "priority": "low",
+      "status": "open",
+      "callback_eta_hours": 2
+    },
+    {
+      "phone_number": "+971507776655",
+      "issue_type": "billing",
+      "description": "Slow data speeds when streaming at home.",
+      "priority": "medium",
+      "status": "open",
+      "callback_eta_hours": 2
     }
   ]
 }

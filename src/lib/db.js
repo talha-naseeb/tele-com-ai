@@ -7,11 +7,17 @@ export async function connectDb() {
   }
   mongoose.set('strictQuery', true);
   if (mongoose.connection.readyState === 1) {
-    return mongoose.connection;
+    const c = mongoose.connection;
+    console.log(
+      `[mongodb] Already connected (host=${c.host}, db=${c.name}, readyState=${c.readyState})`
+    );
+    return c;
   }
   try {
     await mongoose.connect(config.mongodbUri);
-    return mongoose.connection;
+    const c = mongoose.connection;
+    console.log(`[mongodb] Connected (host=${c.host}, db=${c.name})`);
+    return c;
   } catch (err) {
     const refused =
       err?.cause?.message?.includes('ECONNREFUSED') ||
