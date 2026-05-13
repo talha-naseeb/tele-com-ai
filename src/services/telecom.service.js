@@ -4,10 +4,11 @@ import { detectPriorityFromIssue } from '../utils/priority.js';
 import { canonicalInternationalPhone } from '../utils/phone.js';
 import { config } from '../config/index.js';
 
+// Suggested add-on packs shown in customer snapshot — real SyriaTel plans (New SYP pricing).
 const PACKAGES = [
-  { plan: 'Starter 10GB Add-on', monthlyPrice: 28000, dataGb: 10 },
-  { plan: 'Value 50GB Add-on', monthlyPrice: 62000, dataGb: 50 },
-  { plan: 'Unlimited Social Pack', monthlyPrice: 41000, dataGb: 999 }
+  { plan: 'Prepaid Monthly 6GB',  monthlyPrice: 480,  dataGb: 6  },
+  { plan: 'Prepaid Monthly 20GB', monthlyPrice: 1200, dataGb: 20 },
+  { plan: 'Social Pack (4GB/day for WhatsApp, Telegram, Facebook, Instagram, X)', monthlyPrice: 0, dataGb: 4 }
 ];
 
 export async function getCustomerByPhone(phoneNumber) {
@@ -193,7 +194,6 @@ export async function getComplaintsByPhone(phoneNumber) {
 function mapComplaintDocToTicket(c) {
   return {
     id: c._id.toString(),
-    phoneNumber: c.phone_number || undefined,
     issue_type: c.issue_type,
     description: c.description,
     priority: c.priority,

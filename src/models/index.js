@@ -71,6 +71,11 @@ const packageCatalogSchema = new Schema(
     },
     categories: [{ type: String }],
     data_gb: { type: Number, default: 0 },
+    minutes_included: { type: Number, default: 0 },
+    sms_included: { type: Number, default: 0 },
+    /** Validity period in days (1 = daily, 7 = weekly, 30 = monthly, 90/180/365 = long-term). */
+    duration_days: { type: Number, default: 30 },
+    /** Actual plan price in the currency field — not necessarily per month; see duration_days. */
     price_monthly: { type: Number, required: true },
     currency: { type: String, default: 'SYP' },
     description: { type: String, required: true },

@@ -52,57 +52,52 @@ api/index.js             # Vercel serverless entry → src/app-factory.js
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `GET` | `/health` | Liveness |
-| `POST` | `/customers/snapshot` | **Preferred for agents.** Body: `phoneNumber`, optional `usagePreference` (`social`, `stream`, …). Same response as GET variant. |
-| `GET` | `/customers/:phoneNumber` | Customer snapshot (optional query `usagePreference`). |
-| `POST` | `/tools/register-complaint-callback` | Body: `{ "phoneNumber", "issueType", "description" }`. Saves **`phone_number`** on the ticket (canonical `+digits`) and returns **`phoneNumber`** plus **`complaintId`** for Retell variables. |
-| `POST` | `/tools/new-connection-callback` | Body: **`fullName`**, **`phoneNumber`**, **`city`**; optional **`area`**, **`planPreference`**, **`notes`**, **`preferredLanguage`** (`en` \| `ar`). Stores a new-line lead in **`connection_requests`**; returns **`connectionRequestId`** and callback ETA. |
-| `POST` | `/complaints/by-phone` | Body: `phoneNumber`. List complaints for that line (newest first). |
-| `GET` | `/complaints/by-phone/:phoneNumber` | Same as POST; path carries the number. |
-| `POST` | `/tickets/by-phone` | Body: `phoneNumber`. Latest ticket for that line (same shape as ticket-by-id). |
-| `GET` | `/tickets/by-phone/:phoneNumber` | Same as POST. |
-| `POST` | `/tickets/lookup` | Body: `ticketId` (Mongo ObjectId). Single complaint by id. |
-| `GET` | `/tickets/:ticketId` | Same as POST lookup. |
-| `POST` | `/packages` | Body (optional): `type`, `category` — same filters as GET query. |
-| `GET` | `/packages` | Plan catalog: query `type`, `category`. |
-| `POST` | `/offers` | Active promotions (no body). |
-| `GET` | `/offers` | Same as POST. |
-| `POST` | `/coverage` | Body: **`city`** (required), optional `area`, `serviceType` (`fiber`, `5g`, `4g`). |
-| `GET` | `/coverage` | Same fields as query parameters (legacy). |
+| `POST` | `/api/customer-snapshot` | Body: `phoneNumber`, optional `usagePreference` (`social`, `stream`, …). |
+| `POST` | `/api/register-complaint` | Body: `phoneNumber`, `issueType`, `description`. Returns `complaintId` + callback ETA. |
+| `POST` | `/api/new-connection` | Body: `fullName`, `phoneNumber`, `city`; optional `area`, `planPreference`, `notes`, `preferredLanguage`. Returns `connectionRequestId`. |
+| `POST` | `/api/complaint-ticket` | Body: `phoneNumber`. Latest ticket for that line. |
+| `POST` | `/api/list-complaints` | Body: `phoneNumber`. All complaints newest first. |
+| `POST` | `/api/ticket-by-id` | Body: `ticketId` (Mongo ObjectId). Single complaint by id. |
+| `POST` | `/api/packages` | Body (optional): `type`, `category`. |
+| `POST` | `/api/latest-offers` | Active promotions (no body). |
+| `POST` | `/api/coverage` | Body: `city` (required), optional `area`, `serviceType` (`fiber`, `5g`, `4g`). |
 
-### Retell tool names (recommended)
+Legacy `GET` routes (`/packages`, `/offers`, `/coverage`, `/customers/:phoneNumber`, `/complaints/by-phone/:phoneNumber`, `/tickets/by-phone/:phoneNumber`, `/tickets/:ticketId`) still work for direct browser / curl testing.
 
-Full mapping (POST bodies and legacy GET) is in [docs/retell-apis.md](docs/retell-apis.md). Copy the **voice agent system prompt** from [docs/voice-agent-prompt.md](docs/voice-agent-prompt.md) into Retell.
+### Retell tool names
 
-| Retell function name | Preferred (POST + JSON) |
+Full mapping is in [docs/retell-apis.md](docs/retell-apis.md). Copy the **voice agent system prompt** from [docs/voice-agent-prompt.md](docs/voice-agent-prompt.md) into Retell.
+
+| Retell function name | POST path |
 | --- | --- |
-| `customer_snapshot_init` | `POST /customers/snapshot` |
-| `register_complaint_init` | `POST /tools/register-complaint-callback` |
-| `new_connection_init` | `POST /tools/new-connection-callback` |
-| `get_complaint_ticket_init` | `POST /tickets/by-phone` |
-| `list_complaints_init` | `POST /complaints/by-phone` |
-| `get_ticket_by_id_init` | `POST /tickets/lookup` |
-| `get_packages_init` | `POST /packages` |
-| `get_latest_offers_init` | `POST /offers` |
-| `check_coverage_init` | `POST /coverage` |
+| `customer_snapshot_init` | `POST /api/customer-snapshot` |
+| `register_complaint_init` | `POST /api/register-complaint` |
+| `new_connection_init` | `POST /api/new-connection` |
+| `get_complaint_ticket_init` | `POST /api/complaint-ticket` |
+| `list_complaints_init` | `POST /api/list-complaints` |
+| `get_ticket_by_id_init` | `POST /api/ticket-by-id` |
+| `get_packages_init` | `POST /api/packages` |
+| `get_latest_offers_init` | `POST /api/latest-offers` |
+| `check_coverage_init` | `POST /api/coverage` |
 
 ### Examples
 
 ```bash
-curl -s "http://localhost:8080/customers/+963941112233"
-curl -s -X POST http://localhost:8080/customers/snapshot \
+curl -s "http://localhost:8080/health"
+curl -s -X POST http://localhost:8080/api/customer-snapshot \
   -H "Content-Type: application/json" \
   -d '{"phoneNumber":"+963941112233","usagePreference":"social"}'
-curl -s -X POST http://localhost:8080/packages \
+curl -s -X POST http://localhost:8080/api/packages \
   -H "Content-Type: application/json" \
   -d '{"type":"prepaid","category":"social"}'
-curl -s -X POST http://localhost:8080/offers
-curl -s -X POST http://localhost:8080/coverage \
+curl -s -X POST http://localhost:8080/api/latest-offers
+curl -s -X POST http://localhost:8080/api/coverage \
   -H "Content-Type: application/json" \
   -d '{"city":"Damascus","area":"Mazzeh","serviceType":"fiber"}'
-curl -s -X POST http://localhost:8080/tools/register-complaint-callback \
+curl -s -X POST http://localhost:8080/api/register-complaint \
   -H "Content-Type: application/json" \
   -d '{"phoneNumber":"+963951234567","issueType":"billing","description":"Wrong charge on last bill"}'
-curl -s -X POST http://localhost:8080/tools/new-connection-callback \
+curl -s -X POST http://localhost:8080/api/new-connection \
   -H "Content-Type: application/json" \
   -d '{"fullName":"Sara Ali","phoneNumber":"+963958887766","city":"Aleppo","area":"Aziziyah","planPreference":"postpaid","notes":"Home fiber interest"}'
 ```
