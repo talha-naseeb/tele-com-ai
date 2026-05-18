@@ -192,8 +192,12 @@ export async function getComplaintsByPhone(phoneNumber) {
 }
 
 function mapComplaintDocToTicket(c) {
+  const phoneRaw = c.phone_number;
   return {
     id: c._id.toString(),
+    ...(phoneRaw
+      ? { phoneNumber: canonicalInternationalPhone(phoneRaw) }
+      : {}),
     issue_type: c.issue_type,
     description: c.description,
     priority: c.priority,

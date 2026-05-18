@@ -6,13 +6,26 @@ Use your public base URL, e.g. `https://your-project.vercel.app`.
 
 ## Authentication
 
-Every `/api/*` request must include the shared secret header:
+### Production (recommended)
+
+Set **`RETELL_API_KEY`** in Vercel / `.env` to your Retell API key. The server verifies each request using Retell’s **`x-retell-signature`** header and the **exact raw JSON body** (do not re-serialize JSON client-side after signing).
 
 | Header | Value |
 | --- | --- |
-| `x-api-key` | Your `API_SECRET_KEY` value from `.env` / Vercel environment variables |
+| `Content-Type` | `application/json` |
+| `x-retell-signature` | Provided by Retell on signed tool/webhook requests |
 
-Configure this in the Retell dashboard under each tool's **Custom Headers** section.
+You do **not** send `x-api-key` when signature verification is enabled. Configure signing in the Retell dashboard per their [secure webhook](https://docs.retellai.com/features/secure-webhook) / tool documentation.
+
+### Local development
+
+If **`RETELL_API_KEY`** is **unset**, the server optionally accepts a shared secret instead:
+
+| Header | Value |
+| --- | --- |
+| `x-api-key` | Your **`API_SECRET_KEY`** value from `.env` |
+
+If neither env var is set, `/api/*` is open (convenient for local curls without secrets).
 
 ---
 
@@ -26,7 +39,9 @@ Retell wraps every tool call as:
   "args": { "phoneNumber": "+963941112233" }
 }
 ```
-The server automatically unwraps `args` into the request body. The `call.from_number` is used server-side to verify the caller only accesses their own data.
+The server verifies the signature on this **full** payload (when `RETELL_API_KEY` is set), then unwraps **`args`** into the request body for handlers. It keeps **`call`** on `req.retellCall` and compares **`call.from_number`** to any **`phoneNumber`** in `args` so a caller cannot impersonate another line.
+
+Endpoints that do not carry a subscriber phone (`/api/packages`, `/api/latest-offers`, `/api/coverage`) rely on signature verification only; **`POST /api/ticket-by-id`** checks that the ticket belongs to the verified caller’s number after lookup.
 
 ---
 
@@ -128,7 +143,7 @@ x-api-key: your-secret
 { "ticketId": "6642a1b2c3d4e5f678901234" }
 ```
 
-Returns: ticket detail or **404** if not found.
+Returns: ticket detail (includes **`phoneNumber`** when stored on the complaint) or **404** if not found. **403** if the verified caller’s line does not match that ticket’s number.
 
 ---
 
@@ -227,9 +242,7 @@ For each tool above, set in the Retell dashboard:
 1. **Function name** — exact name from the list (e.g. `customer_snapshot_init`)
 2. **Method** — `POST`
 3. **URL** — `https://your-project.vercel.app` + path (e.g. `/api/customer-snapshot`)
-4. **Custom Headers**:
-   - `Content-Type: application/json`
-   - `x-api-key: <your API_SECRET_KEY>`
+4. **Authentication** — Prefer **`RETELL_API_KEY`** + Retell’s **`x-retell-signature`** on the raw JSON body. For dev without that key, use **Custom Headers**: `Content-Type: application/json` and `x-api-key: <your API_SECRET_KEY>`.
 5. **Parameters** — define each body field as described above; mark required fields accordingly
 6. **Timeout** — set to at least `10000ms` (10 seconds) to allow for DB lookup
 

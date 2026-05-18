@@ -48,6 +48,10 @@ export async function ticketByIdPost(req, res) {
   if (!ticket) {
     return res.status(404).json({ message: TICKET_NOT_FOUND });
   }
+  if (ticket.phoneNumber) {
+    const ticketPhone = normalizePhoneInput(ticket.phoneNumber);
+    if (ticketPhone && !assertCallerOwnership(req, res, ticketPhone)) return;
+  }
   res.json(ticket);
 }
 

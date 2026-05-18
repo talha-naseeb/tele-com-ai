@@ -1,9 +1,10 @@
 /**
- * Verifies the Retell caller's real `from_number` matches the phone number
- * being requested. Returns true (safe to proceed) or sends a 403 and returns false.
+ * Verifies the Retell caller's real `from_number` matches the phone number in the request.
+ * Returns true (safe to proceed) or sends 403 and returns false.
  *
- * Only enforced when `req.retellCall` is present — direct API calls without a
- * Retell call wrapper are not gated here (they are protected by the API key instead).
+ * When `req.retellCall` is missing (e.g. plain curl without a Retell envelope), this check
+ * is skipped so local testing stays workable when `RETELL_API_KEY` / `API_SECRET_KEY` are unset.
+ * Production agents should set **RETELL_API_KEY** so payloads are signature-verified and include `call`.
  *
  * @param {import('express').Request} req
  * @param {import('express').Response} res

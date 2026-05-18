@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { registerNewConnection } from '../services/telecom.service.js';
-import { hasTemplatePlaceholder } from '../utils/route-helpers.js';
+import { assertCallerOwnership, hasTemplatePlaceholder, normalizePhoneInput } from '../utils/route-helpers.js';
 
 const schema = z.object({
   fullName: z.string().min(2),
@@ -22,6 +22,12 @@ export async function newConnectionPost(req, res) {
       });
     }
   }
+
+  const phone = normalizePhoneInput(parsed.phoneNumber);
+  if (!phone) {
+    return res.status(400).json({ message: 'Invalid phone number.' });
+  }
+  if (!assertCallerOwnership(req, res, phone)) return;
 
   const result = await registerNewConnection(parsed);
   res.json(result);

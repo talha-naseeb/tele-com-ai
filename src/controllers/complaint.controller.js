@@ -32,7 +32,10 @@ export async function registerComplaintPost(req, res) {
   });
   const payload = schema.parse(req.body);
   const phone = normalizePhoneInput(payload.phoneNumber);
-  if (phone && !assertCallerOwnership(req, res, phone)) return;
+  if (!phone) {
+    return res.status(400).json({ message: 'Invalid phone number.' });
+  }
+  if (!assertCallerOwnership(req, res, phone)) return;
   const result = await registerComplaint(payload);
   res.json(result);
 }
